@@ -154,105 +154,6 @@ st.write('---')
 
 st.markdown('## Highest Frequency Pollution')
 
-# heatmap
-with st.container():
-    fig, ax = plt.subplots(figsize=(15,8))
-    sns.heatmap(korelasi, vmax = 1, vmin = -1, center = 0, cmap = "plasma")
-    ax.tick_params(labelsize = 20)
-    ax.set_title("Korelasi heatmap", loc="center", fontsize=35)
-
-plt.show()
-
-# Tampilan grafik scatter plot dengan menggunakan fungsi corr_scatter_graph(df)
-def corr_scatter_graph(df):
-    fig1, ax1 = plt.subplots(nrows=3, ncols=2, figsize=(16, 8))
-
-    ax1[0,0].scatter(df['TEMP'], df['PM2.5'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax1[0,0].set_xticklabels([])
-    ax1[0,0].set_yticklabels([])
-    ax1[0,0].set_xlabel("SUHU", fontsize = 20)
-    ax1[0,0].set_ylabel("PM2.5", fontsize = 20)
-
-    ax1[0,1].scatter(df['TEMP'], df['PM10'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax1[0,1].set_xticklabels([])
-    ax1[0,1].set_yticklabels([])
-    ax1[0,1].set_xlabel("SUHU", fontsize = 20)
-    ax1[0,1].set_ylabel("PM10", fontsize = 20)
-
-    ax1[1,0].scatter(df['TEMP'], df['SO2'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax1[1,0].set_xticklabels([])
-    ax1[1,0].set_yticklabels([])
-    ax1[1,0].set_xlabel("SUHU", fontsize = 20)
-    ax1[1,0].set_ylabel("SO2", fontsize = 20)
-
-    ax1[1,1].scatter(df['TEMP'], df['NO2'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax1[1,1].set_xticklabels([])
-    ax1[1,1].set_yticklabels([])
-    ax1[1,1].set_xlabel("SUHU", fontsize = 20)
-    ax1[1,1].set_ylabel("NO2", fontsize = 20)
-
-    ax1[2,0].scatter(df['TEMP'], df['CO'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax1[2,0].set_xticklabels([])
-    ax1[2,0].set_yticklabels([])
-    ax1[2,0].set_xlabel("SUHU", fontsize = 20)
-    ax1[2,0].set_ylabel("CO", fontsize = 20)
-
-    ax1[2,1].scatter(df['TEMP'], df['O3'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax1[2,1].set_xticklabels([])
-    ax1[2,1].set_yticklabels([])
-    ax1[2,1].set_xlabel("SUHU", fontsize = 20)
-    ax1[2,1].set_ylabel("O3", fontsize = 20)
-
-    fig1.tight_layout(pad=2.0)
-
-    plt.suptitle("Tingkat Polusi Udara VS Suhu", fontsize=45, y=1.05)
-    plt.show(fig1)
-
-    fig2, ax2 = plt.subplots(nrows=3, ncols=2, figsize=(16, 8))
-
-    ax2[0,0].scatter(df['PRES'], df['PM2.5'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax2[0,0].set_xticklabels([])
-    ax2[0,0].set_yticklabels([])
-    ax2[0,0].set_xlabel("TEKANAN", fontsize = 20)
-    ax2[0,0].set_ylabel("PM2.5", fontsize = 20)
-
-    ax2[0,1].scatter(df['PRES'], df['PM10'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax2[0,1].set_xticklabels([])
-    ax2[0,1].set_yticklabels([])
-    ax2[0,1].set_xlabel("TEKANAN", fontsize = 20)
-    ax2[0,1].set_ylabel("PM10", fontsize = 20)
-
-    ax2[1,0].scatter(df['PRES'], df['SO2'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax2[1,0].set_xticklabels([])
-    ax2[1,0].set_yticklabels([])
-    ax2[1,0].set_xlabel("TEKANAN", fontsize = 20)
-    ax2[1,0].set_ylabel("SO2", fontsize = 20)
-
-    ax2[1,1].scatter(df['PRES'], df['NO2'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax2[1,1].set_xticklabels([])
-    ax2[1,1].set_yticklabels([])
-    ax2[1,1].set_xlabel("TEKANAN", fontsize = 20)
-    ax2[1,1].set_ylabel("NO2", fontsize = 20)
-
-    ax2[2,0].scatter(df['PRES'], df['CO'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax2[2,0].set_xticklabels([])
-    ax2[2,0].set_yticklabels([])
-    ax2[2,0].set_xlabel("TEKANAN", fontsize = 20)
-    ax2[2,0].set_ylabel("CO", fontsize = 20)
-
-    ax2[2,1].scatter(df['PRES'], df['O3'],s = 5, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-    ax2[2,1].set_xticklabels([])
-    ax2[2,1].set_yticklabels([])
-    ax2[2,1].set_xlabel("TEKANAN", fontsize = 20)
-    ax2[2,1].set_ylabel("O3", fontsize = 20)
-
-    fig2.tight_layout(pad=2.0)
-
-    plt.suptitle("Tingkat Polusi Udara VS Tekanan", fontsize=45, y=1.05)
-    plt.show(fig2)
-    
-corr_scatter_graph(correlation_df)
-    
 # Kolom-kolom yang mengandung data polutan udara
 pollutants = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
 
@@ -260,11 +161,129 @@ pollutants = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
 pollutant_counts = tian_df[pollutants].mode().iloc[0]
 
 # Membuat diagram batang untuk polutan yang paling umum
-plt.figure(figsize=(10, 6))
-pollutant_counts.plot(kind='bar', color='skyblue')
-plt.title('Polutan Udara dengan Jumlah Tertinggi Di Stasiun Tiantan')
-plt.xlabel('Polutan Udara')
-plt.ylabel('Frekuensi Kemunculan')
-plt.xticks(rotation=45)
-plt.show()
+with st.container():
+    fig = plt.figure(figsize=(4, 4))
+    pollutant_counts.plot(kind='bar', color='skyblue')
+    plt.title('Polutan Udara dengan Jumlah Tertinggi Di Stasiun Tiantan')
+    plt.xlabel('Polutan Udara')
+    plt.ylabel('Frekuensi Kemunculan')
+    plt.xticks(rotation=45)
+    st.pyplot(fig) 
+
+
+st.markdown('## Temperature, Pressure and Pollutan Correlation Heatmap')
+
+# heatmap
+with st.container():
+    fig, ax = plt.subplots(figsize=(6,3))
+    sns.heatmap(korelasi, vmax = 1, vmin = -1, center = 0, cmap = "plasma")
+    ax.tick_params(labelsize = 5)
+    ax.set_title("Korelasi heatmap", loc="center", fontsize=5)
+    st.pyplot(fig)     
+
+
+st.markdown('## Temperature, Pressure and Pollutan Detailed Scatter Plot')
+
+# Tampilan grafik scatter plot dengan menggunakan fungsi corr_scatter_graph(df)
+def corr_scatter_graph(df):
+    with st.expander("Air Quality VS Temperature"):
+        fig1, ax1 = plt.subplots(figsize=(8, 4))
+        ax1.scatter(df['TEMP'], df['PM2.5'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax1.set_xticklabels([])
+        ax1.set_yticklabels([])
+        ax1.set_xlabel("TEMPERATURE", fontsize = 20)
+        ax1.set_ylabel("PM2.5", fontsize = 20)
+        st.pyplot(fig1)
+
+        fig2, ax2 = plt.subplots(figsize=(8, 4))
+        ax2.scatter(df['TEMP'], df['PM10'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax2.set_xticklabels([])
+        ax2.set_yticklabels([])
+        ax2.set_xlabel("TEMPERATURE", fontsize = 20)
+        ax2.set_ylabel("PM10", fontsize = 20)
+        st.pyplot(fig2)
+
+        fig3, ax3 = plt.subplots(figsize=(8, 4))
+        ax3.scatter(df['TEMP'], df['SO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax3.set_xticklabels([])
+        ax3.set_yticklabels([])
+        ax3.set_xlabel("TEMPERATURE", fontsize = 20)
+        ax3.set_ylabel("SO2", fontsize = 20)
+        st.pyplot(fig3)
+
+        fig4, ax4 = plt.subplots(figsize=(8, 4))
+        ax4.scatter(df['TEMP'], df['NO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax4.set_xticklabels([])
+        ax4.set_yticklabels([])
+        ax4.set_xlabel("TEMPERATURE", fontsize = 20)
+        ax4.set_ylabel("NO2", fontsize = 20)
+        st.pyplot(fig4)
+
+        fig5, ax5 = plt.subplots(figsize=(8, 4))
+        ax5.scatter(df['TEMP'], df['CO'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax5.set_xticklabels([])
+        ax5.set_yticklabels([])
+        ax5.set_xlabel("TEMPERATURE", fontsize = 20)
+        ax5.set_ylabel("CO", fontsize = 20)
+        st.pyplot(fig5)
+
+        fig6, ax6 = plt.subplots(figsize=(8, 4))
+        ax6.scatter(df['TEMP'], df['O3'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax6.set_xticklabels([])
+        ax6.set_yticklabels([])
+        ax6.set_xlabel("TEMPERATURE", fontsize = 20)
+        ax6.set_ylabel("O3", fontsize = 20)
+        st.pyplot(fig6)
+
+    with st.expander("Air Quality VS Pressure"):
+        fig1, ax1 = plt.subplots(figsize=(8, 4))
+        ax1.scatter(df['PRES'], df['PM2.5'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax1.set_xticklabels([])
+        ax1.set_yticklabels([])
+        ax1.set_xlabel("PRESSURE", fontsize = 20)
+        ax1.set_ylabel("PM2.5", fontsize = 20)
+        st.pyplot(fig1)
+
+        fig2, ax2 = plt.subplots(figsize=(8, 4))
+        ax2.scatter(df['PRES'], df['PM10'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax2.set_xticklabels([])
+        ax2.set_yticklabels([])
+        ax2.set_xlabel("PRESSURE", fontsize = 20)
+        ax2.set_ylabel("PM10", fontsize = 20)
+        st.pyplot(fig2)
+
+        fig3, ax3 = plt.subplots(figsize=(8, 4))
+        ax3.scatter(df['PRES'], df['SO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax3.set_xticklabels([])
+        ax3.set_yticklabels([])
+        ax3.set_xlabel("PRESSURE", fontsize = 20)
+        ax3.set_ylabel("SO2", fontsize = 20)
+        st.pyplot(fig3)
+
+        fig4, ax4 = plt.subplots(figsize=(8, 4))
+        ax4.scatter(df['PRES'], df['NO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax4.set_xticklabels([])
+        ax4.set_yticklabels([])
+        ax4.set_xlabel("PRESSURE", fontsize = 20)
+        ax4.set_ylabel("NO2", fontsize = 20)
+        st.pyplot(fig4)
+
+        fig5, ax5 = plt.subplots(figsize=(8, 4))
+        ax5.scatter(df['PRES'], df['CO'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
+        ax5.set_xticklabels([])
+        ax5.set_yticklabels([])
+        ax5.set_xlabel("PRESSURE", fontsize = 20)
+        ax5.set_ylabel("CO", fontsize = 20)
+        st.pyplot(fig5)
+
+        fig6, ax6 = plt.subplots(figsize=(8, 4))
+        ax6.scatter(df['PRES'], df['O3'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolor= "#ed7d53")
+        ax6.set_xticklabels([])
+        ax6.set_yticklabels([])
+        ax6.set_xlabel("PRESSURE", fontsize = 20)
+        ax6.set_ylabel("O3", fontsize = 20)
+        st.pyplot(fig6)
+    
+corr_scatter_graph(correlation_df)
+    
 
