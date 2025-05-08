@@ -6,96 +6,98 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 # import library
 
-# pembuatan data frame
+import pandas as pd
+
+# Membaca data dari file CSV
 tian_df = pd.read_csv("dashboard/tiantan.csv")
-tian_df.head()
-# pembuatan data frame
 
-# tingkat polusi udara per jam pada tanggal 2013-03-01
-air_polution_hour = tian_df.groupby(by = ['year', 'month', 'day','hour'] ).agg({
-            "PM2.5" : "mean",
-            "PM10" : "mean",
-            "SO2" : "mean",
-            "NO2" : "mean",
-            "CO" : "mean",
-            "O3" : "mean"}).sort_values(by = ['year', 'month', 'day','hour'], ascending = True)
-air_polution_hour = air_polution_hour.reset_index()
-air_polution_hour['time'] = air_polution_hour["hour"].astype(str) + ":00"
-air_polution_hour.head(24)
+# --- Agregasi data polusi udara berdasarkan waktu ---
 
-# Tingkat polusi selama 10 hari pada tanggal 2013-03-01 sampai 2013-03-10 (10 data pertama)
-air_polution_day = tian_df.groupby(by = ['year', 'month', 'day'] ).agg({
-            "PM2.5" : "mean",
-            "PM10" : "mean",
-            "SO2" : "mean",
-            "NO2" : "mean",
-            "CO" : "mean",
-            "O3" : "mean"}).sort_values(by = ['year', 'month', 'day'], ascending = True)
-air_polution_day = air_polution_day.reset_index()
-air_polution_day['time'] = air_polution_day["year"].astype(str) + "-" + air_polution_day["month"].astype(str) + "-" + air_polution_day["day"].astype(str)
-air_polution_day.head(10)
+# Rata-rata polusi per jam (contoh: untuk 2013-03-01)
+air_polution_hour = (
+    tian_df.groupby(['year', 'month', 'day', 'hour'])[
+        ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
+    ]
+    .mean()
+    .reset_index()
+    .sort_values(by=['year', 'month', 'day', 'hour'])
+)
+air_polution_hour['time'] = air_polution_hour['hour'].astype(str) + ":00"
 
-# Tingkat polusi selama 10 bulan pada tanggal 2013-03 sampai 2013-10 (10 data pertama)
-air_polution_month = tian_df.groupby(by = ['year', 'month'] ).agg({
-            "PM2.5" : "mean",
-            "PM10" : "mean",
-            "SO2" : "mean",
-            "NO2" : "mean",
-            "CO" : "mean",
-            "O3" : "mean"}).sort_values(by = ['year', 'month'], ascending = True)
-air_polution_month = air_polution_month.reset_index()
-air_polution_month['time'] = air_polution_month["year"].astype(str) + "-" + air_polution_month["month"].astype(str)
-air_polution_month.head(10)
+# Rata-rata polusi per hari (contoh: 2013-03-01 sampai 2013-03-10)
+air_polution_day = (
+    tian_df.groupby(['year', 'month', 'day'])[
+        ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
+    ]
+    .mean()
+    .reset_index()
+    .sort_values(by=['year', 'month', 'day'])
+)
+air_polution_day['time'] = air_polution_day['year'].astype(str) + "-" + air_polution_day['month'].astype(str) + "-" + air_polution_day['day'].astype(str)
 
-# polusi selama 5 tahun
-air_polution_year = tian_df.groupby(by = ['year'] ).agg({
-            "PM2.5" : "mean",
-            "PM10" : "mean",
-            "SO2" : "mean",
-            "NO2" : "mean",
-            "CO" : "mean",
-            "O3" : "mean"}).sort_values(by = ['year'], ascending = True)
-air_polution_year = air_polution_year.reset_index()
-air_polution_year['time'] = air_polution_year["year"].astype(str)
-air_polution_year.head(10)
+# Rata-rata polusi per bulan (contoh: 2013-03 sampai 2013-10)
+air_polution_month = (
+    tian_df.groupby(['year', 'month'])[
+        ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
+    ]
+    .mean()
+    .reset_index()
+    .sort_values(by=['year', 'month'])
+)
+air_polution_month['time'] = air_polution_month['year'].astype(str) + "-" + air_polution_month['month'].astype(str)
 
-# suhu dan tekanan selama 24 jam pada 2013-03-01
-air_parameters_hour = tian_df.groupby(by = ['year', 'month', 'day','hour'] ).agg({
-            "TEMP" : "mean",
-            "PRES" : "mean"}).sort_values(by = ['year', 'month', 'day','hour'], ascending = True)
-air_parameters_hour = air_parameters_hour.reset_index()
-air_parameters_hour['time'] = air_parameters_hour["hour"].astype(str) + ":00"
-air_parameters_hour.head(24)
+# Rata-rata polusi per tahun (contoh: 2013 sampai 2017)
+air_polution_year = (
+    tian_df.groupby('year')[
+        ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
+    ]
+    .mean()
+    .reset_index()
+    .sort_values(by='year')
+)
+air_polution_year['time'] = air_polution_year['year'].astype(str)
 
-# Suhu dan tekanan udara selama 10 hari tanggal 2013-03-01 sampai 2013-03-10
-air_parameters_day = tian_df.groupby(by = ['year', 'month', 'day'] ).agg({
-            "TEMP" : "mean",
-            "PRES" : "mean"}).sort_values(by = ['year', 'month', 'day'], ascending = True)
-air_parameters_day = air_parameters_day.reset_index()
-air_parameters_day['time'] = air_parameters_day["year"].astype(str) + "-" + air_parameters_day["month"].astype(str) + "-" + air_parameters_day["day"].astype(str)
-air_parameters_day.head(10)
+# --- Agregasi suhu dan tekanan berdasarkan waktu ---
 
-# Suhu dan tekanan udara selama 10 bulan tanggal 2013-03 sampai 2013-10
-air_parameters_month = tian_df.groupby(by = ['year', 'month']).agg({
-            "TEMP" : "mean",
-            "PRES" : "mean"}).sort_values(by = ['year', 'month'], ascending = True)
-air_parameters_month = air_parameters_month.reset_index()
-air_parameters_month['time'] = air_parameters_month["year"].astype(str) + "-" + air_parameters_month["month"].astype(str)
-air_parameters_month.head(10)
+# Per jam
+air_parameters_hour = (
+    tian_df.groupby(['year', 'month', 'day', 'hour'])[['TEMP', 'PRES']]
+    .mean()
+    .reset_index()
+    .sort_values(by=['year', 'month', 'day', 'hour'])
+)
+air_parameters_hour['time'] = air_parameters_hour['hour'].astype(str) + ":00"
 
-# Suhu dan tekanan udara selama 5 tahun tanggal 2013 sampai 2017
-air_parameters_year = tian_df.groupby(by = ['year'] ).agg({
-            "TEMP" : "mean",
-            "PRES" : "mean"}).sort_values(by = ['year'], ascending = True)
-air_parameters_year = air_parameters_year.reset_index()
-air_parameters_year['time'] = air_parameters_year["year"].astype(str)
-air_parameters_year.head(5)
+# Per hari
+air_parameters_day = (
+    tian_df.groupby(['year', 'month', 'day'])[['TEMP', 'PRES']]
+    .mean()
+    .reset_index()
+    .sort_values(by=['year', 'month', 'day'])
+)
+air_parameters_day['time'] = air_parameters_day['year'].astype(str) + "-" + air_parameters_day['month'].astype(str) + "-" + air_parameters_day['day'].astype(str)
 
-# korelasi suhu dan tekanan dengan polusi udara
-correlation_df = tian_df[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'TEMP', 'PRES']].copy()
+# Per bulan
+air_parameters_month = (
+    tian_df.groupby(['year', 'month'])[['TEMP', 'PRES']]
+    .mean()
+    .reset_index()
+    .sort_values(by=['year', 'month'])
+)
+air_parameters_month['time'] = air_parameters_month['year'].astype(str) + "-" + air_parameters_month['month'].astype(str)
 
+# Per tahun
+air_parameters_year = (
+    tian_df.groupby('year')[['TEMP', 'PRES']]
+    .mean()
+    .reset_index()
+    .sort_values(by='year')
+)
+air_parameters_year['time'] = air_parameters_year['year'].astype(str)
 
-korelasi = correlation_df.corr(method = "pearson")
+# --- Korelasi suhu dan tekanan terhadap polutan udara ---
+correlation_df = tian_df[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3', 'TEMP', 'PRES']]
+korelasi = correlation_df.corr(method='pearson')
 
 
 def correlation_suhu(df):
@@ -160,129 +162,59 @@ pollutants = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
 # Mencari frekuensi kemunculan masing-masing polutan
 pollutant_counts = tian_df[pollutants].mode().iloc[0]
 
-# Membuat diagram batang untuk polutan yang paling umum
+# Membuat diagram batang untuk polutan yang paling banyak
 with st.container():
-    fig = plt.figure(figsize=(4, 4))
-    pollutant_counts.plot(kind='bar', color='skyblue')
-    plt.title('Polutan Udara dengan Jumlah Tertinggi Di Stasiun Tiantan')
-    plt.xlabel('Polutan Udara')
-    plt.ylabel('Frekuensi Kemunculan')
-    plt.xticks(rotation=45)
-    st.pyplot(fig) 
+    fig, ax = plt.subplots(figsize=(7, 2))
+    
+    ax.bar(pollutant_counts.index, pollutant_counts.values, color='red')
+    ax.set_title("Polutan Udara Terbanyak di Stasiun Tiantan", fontsize=8)
+    ax.set_xlabel("Jenis Polutan", fontsize=5)
+    ax.set_ylabel("Jumlah Kemunculan", fontsize=5)
+
+    ax.tick_params(axis='x', labelrotation=45, labelsize=5)
+    ax.tick_params(axis='y', labelsize=5)
+
+    st.pyplot(fig)
+
 
 
 st.markdown('## Temperature, Pressure and Pollutan Correlation Heatmap')
 
 # heatmap
 with st.container():
-    fig, ax = plt.subplots(figsize=(6,3))
-    sns.heatmap(korelasi, vmax = 1, vmin = -1, center = 0, cmap = "plasma")
-    ax.tick_params(labelsize = 5)
-    ax.set_title("Korelasi heatmap", loc="center", fontsize=5)
-    st.pyplot(fig)     
-
+    fig = plt.figure(figsize=(5, 3))
+    ax = fig.add_subplot(111)
+    sns.heatmap(data=korelasi, ax=ax, cmap="plasma", vmin=-1, vmax=1, center=0)
+    ax.tick_params(axis='both', labelsize=6)
+    ax.set_title("Correlation Heatmap", fontsize=8, loc='center')
+    st.pyplot(fig)
 
 st.markdown('## Temperature, Pressure and Pollutan Detailed Scatter Plot')
 
 # Tampilan grafik scatter plot dengan menggunakan fungsi corr_scatter_graph(df)
 def corr_scatter_graph(df):
+    pollutants = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
+    scatter_params = dict(s=400, alpha=0.5, c="#FACE2D", marker='o', edgecolors="#ed7d53")
+
     with st.expander("Air Quality VS Temperature"):
-        fig1, ax1 = plt.subplots(figsize=(8, 4))
-        ax1.scatter(df['TEMP'], df['PM2.5'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax1.set_xticklabels([])
-        ax1.set_yticklabels([])
-        ax1.set_xlabel("TEMPERATURE", fontsize = 20)
-        ax1.set_ylabel("PM2.5", fontsize = 20)
-        st.pyplot(fig1)
-
-        fig2, ax2 = plt.subplots(figsize=(8, 4))
-        ax2.scatter(df['TEMP'], df['PM10'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax2.set_xticklabels([])
-        ax2.set_yticklabels([])
-        ax2.set_xlabel("TEMPERATURE", fontsize = 20)
-        ax2.set_ylabel("PM10", fontsize = 20)
-        st.pyplot(fig2)
-
-        fig3, ax3 = plt.subplots(figsize=(8, 4))
-        ax3.scatter(df['TEMP'], df['SO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax3.set_xticklabels([])
-        ax3.set_yticklabels([])
-        ax3.set_xlabel("TEMPERATURE", fontsize = 20)
-        ax3.set_ylabel("SO2", fontsize = 20)
-        st.pyplot(fig3)
-
-        fig4, ax4 = plt.subplots(figsize=(8, 4))
-        ax4.scatter(df['TEMP'], df['NO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax4.set_xticklabels([])
-        ax4.set_yticklabels([])
-        ax4.set_xlabel("TEMPERATURE", fontsize = 20)
-        ax4.set_ylabel("NO2", fontsize = 20)
-        st.pyplot(fig4)
-
-        fig5, ax5 = plt.subplots(figsize=(8, 4))
-        ax5.scatter(df['TEMP'], df['CO'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax5.set_xticklabels([])
-        ax5.set_yticklabels([])
-        ax5.set_xlabel("TEMPERATURE", fontsize = 20)
-        ax5.set_ylabel("CO", fontsize = 20)
-        st.pyplot(fig5)
-
-        fig6, ax6 = plt.subplots(figsize=(8, 4))
-        ax6.scatter(df['TEMP'], df['O3'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax6.set_xticklabels([])
-        ax6.set_yticklabels([])
-        ax6.set_xlabel("TEMPERATURE", fontsize = 20)
-        ax6.set_ylabel("O3", fontsize = 20)
-        st.pyplot(fig6)
+        for pol in pollutants:
+            fig, ax = plt.subplots(figsize=(8, 3))
+            ax.scatter(df['TEMP'], df[pol], **scatter_params)
+            ax.set_xticklabels([])
+            ax.set_yticklabels([])
+            ax.set_xlabel("TEMPERATURE", fontsize=20)
+            ax.set_ylabel(pol, fontsize=20)
+            st.pyplot(fig)
 
     with st.expander("Air Quality VS Pressure"):
-        fig1, ax1 = plt.subplots(figsize=(8, 4))
-        ax1.scatter(df['PRES'], df['PM2.5'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax1.set_xticklabels([])
-        ax1.set_yticklabels([])
-        ax1.set_xlabel("PRESSURE", fontsize = 20)
-        ax1.set_ylabel("PM2.5", fontsize = 20)
-        st.pyplot(fig1)
-
-        fig2, ax2 = plt.subplots(figsize=(8, 4))
-        ax2.scatter(df['PRES'], df['PM10'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax2.set_xticklabels([])
-        ax2.set_yticklabels([])
-        ax2.set_xlabel("PRESSURE", fontsize = 20)
-        ax2.set_ylabel("PM10", fontsize = 20)
-        st.pyplot(fig2)
-
-        fig3, ax3 = plt.subplots(figsize=(8, 4))
-        ax3.scatter(df['PRES'], df['SO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax3.set_xticklabels([])
-        ax3.set_yticklabels([])
-        ax3.set_xlabel("PRESSURE", fontsize = 20)
-        ax3.set_ylabel("SO2", fontsize = 20)
-        st.pyplot(fig3)
-
-        fig4, ax4 = plt.subplots(figsize=(8, 4))
-        ax4.scatter(df['PRES'], df['NO2'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax4.set_xticklabels([])
-        ax4.set_yticklabels([])
-        ax4.set_xlabel("PRESSURE", fontsize = 20)
-        ax4.set_ylabel("NO2", fontsize = 20)
-        st.pyplot(fig4)
-
-        fig5, ax5 = plt.subplots(figsize=(8, 4))
-        ax5.scatter(df['PRES'], df['CO'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolors= "#ed7d53")
-        ax5.set_xticklabels([])
-        ax5.set_yticklabels([])
-        ax5.set_xlabel("PRESSURE", fontsize = 20)
-        ax5.set_ylabel("CO", fontsize = 20)
-        st.pyplot(fig5)
-
-        fig6, ax6 = plt.subplots(figsize=(8, 4))
-        ax6.scatter(df['PRES'], df['O3'],s = 400, alpha = 0.5, c = "#FACE2D",marker = 'o', edgecolor= "#ed7d53")
-        ax6.set_xticklabels([])
-        ax6.set_yticklabels([])
-        ax6.set_xlabel("PRESSURE", fontsize = 20)
-        ax6.set_ylabel("O3", fontsize = 20)
-        st.pyplot(fig6)
+        for pol in pollutants:
+            fig, ax = plt.subplots(figsize=(8, 3))
+            ax.scatter(df['PRES'], df[pol], **scatter_params)
+            ax.set_xticklabels([])
+            ax.set_yticklabels([])
+            ax.set_xlabel("PRESSURE", fontsize=20)
+            ax.set_ylabel(pol, fontsize=20)
+            st.pyplot(fig)
     
 corr_scatter_graph(correlation_df)
     
