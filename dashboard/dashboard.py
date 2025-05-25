@@ -68,6 +68,7 @@ air_parameters_hour = (
 )
 air_parameters_hour['time'] = air_parameters_hour['hour'].astype(str) + ":00"
 
+
 # Per hari
 air_parameters_day = (
     tian_df.groupby(['year', 'month', 'day'])[['TEMP', 'PRES']]
@@ -144,6 +145,48 @@ print("Polutan Udara Paling Tinggi:")
 for pollutant, value in high_pollutants.items():
     print(f"{pollutant}: {value}")
     
+# Jumlah polutan per jam
+total_polution_hour = (
+    tian_df.groupby(['year', 'month', 'day', 'hour'])[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']]
+    .sum()
+    .reset_index()
+    .sort_values(by=['year', 'month', 'day', 'hour'])
+)
+total_polution_hour['time'] = total_polution_hour['hour'].astype(str) + ":00"
+
+# Jumlah polutan per hari
+total_polution_day = (
+    tian_df.groupby(['year', 'month', 'day'])[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']]
+    .sum()
+    .reset_index()
+    .sort_values(by=['year', 'month', 'day'])
+)
+total_polution_day['time'] = (
+    total_polution_day['year'].astype(str) + "-" +
+    total_polution_day['month'].astype(str) + "-" +
+    total_polution_day['day'].astype(str)
+)
+
+# Jumlah polutan per bulan
+total_polution_month = (
+    tian_df.groupby(['year', 'month'])[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']]
+    .sum()
+    .reset_index()
+    .sort_values(by=['year', 'month'])
+)
+total_polution_month['time'] = (
+    total_polution_month['year'].astype(str) + "-" + total_polution_month['month'].astype(str)
+)
+
+# Jumlah polutan per tahun
+total_polution_year = (
+    tian_df.groupby('year')[['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']]
+    .sum()
+    .reset_index()
+    .sort_values(by='year')
+)
+total_polution_year['time'] = total_polution_year['year'].astype(str)
+    
 # eksplore data
 
 # visualisasi data
@@ -154,13 +197,102 @@ st.markdown('# ☁️🌀 Tiantan City Air Pollution Dashboard')
 
 st.write('---')
 
-st.markdown('## Highest Frequency Pollution')
-
 # Kolom-kolom yang mengandung data polutan udara
 pollutants = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
 
 # Mencari frekuensi kemunculan masing-masing polutan
 pollutant_counts = tian_df[pollutants].mode().iloc[0]
+
+#Polutan per jam
+st.markdown('## Pollutant per Hour Tren')
+
+# Pilih polutan yang ingin divisualisasikan (opsional, bisa dibuat dropdown di Streamlit)
+selected_pollutant_hour = st.multiselect(
+    "Select Pollutant to Show:",
+    ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3'],
+    key='pollutant per hour',
+    placeholder="Select one pollutant:",
+)
+
+# Plot line chart
+if selected_pollutant_hour!=[]:
+    st.line_chart(
+        data=total_polution_hour,
+        x='time',  # waktu
+        y=selected_pollutant_hour,  # kolom polutan
+        use_container_width=True
+    )
+else:
+    pass
+
+# Polutan per hari
+st.markdown('## Pollutant per Day Tren')
+
+# Pilih polutan yang ingin divisualisasikan (opsional, bisa dibuat dropdown di Streamlit)
+selected_pollutant_day = st.multiselect(
+    "Select Pollutant to Show:",
+    ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3'],
+    key='pollutant per day',
+    placeholder="Select one pollutant:",
+)
+
+# Plot line chart
+if selected_pollutant_day!=[]:
+    st.line_chart(
+        data=total_polution_day,
+        x='time',  # waktu
+        y=selected_pollutant_day,  # kolom polutan
+        use_container_width=True
+    )
+else:
+    pass    
+
+# Polutan per bulan
+st.markdown('## Pollutant per Month Tren')
+
+# Pilih polutan yang ingin divisualisasikan (opsional, bisa dibuat dropdown di Streamlit)
+selected_pollutant_month = st.multiselect(
+    "Select Pollutant to Show:",
+    ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3'],
+    key='pollutant per month',
+    placeholder="Select one pollutant:",
+)
+
+# Plot line chart
+if selected_pollutant_month!=[]:
+    st.line_chart(
+        data=total_polution_month,
+        x='time',  # waktu
+        y=selected_pollutant_month,  # kolom polutan
+        use_container_width=True
+    )
+else:
+    pass
+
+# Polutan per tahun
+st.markdown('## Pollutant per Year Tren')
+
+# Pilih polutan yang ingin divisualisasikan (opsional, bisa dibuat dropdown di Streamlit)
+selected_pollutant_year = st.multiselect(
+    "Select Pollutant to Show:",
+    ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3'],
+    key='pollutant per year',
+    placeholder="Select one pollutant:",
+)
+
+# Plot line chart
+if selected_pollutant_year!=[]:
+    st.line_chart(
+        data=total_polution_year,
+        x='time',  # waktu
+        y=selected_pollutant_year,  # kolom polutan
+        use_container_width=True
+    )
+else:
+    pass
+
+# Frekuensi polutan terbanyak
+st.markdown('## Highest Frequency Pollution')
 
 # Membuat diagram batang untuk polutan yang paling banyak
 with st.container():
@@ -175,7 +307,6 @@ with st.container():
     ax.tick_params(axis='y', labelsize=5)
 
     st.pyplot(fig)
-
 
 
 st.markdown('## Temperature, Pressure and Pollutan Correlation Heatmap')
